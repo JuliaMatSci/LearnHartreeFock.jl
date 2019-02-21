@@ -13,7 +13,9 @@ input:
     basisfile - name of file containing basis parameters.
     format (optional) - the format of the basis file.
 
-returns: basisread - lines read from basis file
+returns: nbasisfunc - number of basis functions. 
+         basisfunc - an Array{Any} of basis function parameters
+         
 
 Description: Read the exponent and coefficients for a gaussian basis set. Returns an array of
 strings that need to be later processed using TypesBasis.jl and Basis.jl.
@@ -40,7 +42,7 @@ commenting them out in the file with #.
                 nbasisread = length(basisread);
                 i = 1;
                 nbasisfunc = 0;
-                basisfunc = [];
+                basisfunc = Array{Array{String,1},1}();
                 flag = false;
                 while flag != true
                     line = basisread[i]
@@ -53,7 +55,7 @@ commenting them out in the file with #.
                     else
                         error("Basis file needs start line having element oribtal number-primitives, example, H S 3")
                     end
-                    params = [];
+                    params = Array{String,1}();
                     for ii=1:nprims
                         i += 1
                         push!(params,basisread[i]);
