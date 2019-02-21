@@ -10,10 +10,9 @@ The code here is directly based on the implementation of Hatree-Fock in Matlab b
 
 
 ## Folder Hierarchy
-- /
-  - /src - T
-  - /tests
-  - /docs
-  - /examples  
+  - /src - The primary source code for running HatreeFock.jl
+  - /tests - Test modules for comparing to original code by Prof. James John.
+  - /docs - Documentation.
+  - /examples  - Example calculations and basis-sets.
 
 
