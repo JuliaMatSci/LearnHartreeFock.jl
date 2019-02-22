@@ -9,11 +9,12 @@ Description: This is the main function responsible for executing the Hatree-Fock
 routines for calculating the total energy of a given system.
 
 Program Outline
-1.  Parse atomic system informatics:
+1.  Parse atomic system info:
              a.) parse(filename) returns a datatype with atomic number and coordinates.
 2.  Caluclate nuclear-nuclear repulsion
-3.  Build basis overlap:
+3.  Setup basis functions:
             a.) returns the basis-set functions and number of electrons
+            b.) build orbital overlap given to handle non-ortho. Gaussian basis set
 4.   Calculate kinetic energy of each electron
 5.   Build/calculate electron-nuclear attraction
 6.   Build/calculate electron-electron repulsion (mean-field and exchange)
@@ -27,19 +28,19 @@ Program Outline
 
     ZZ = calcnuclrepul(atomicsystem);
 
-    basisfunc, numelec = build_basis_func(atomicsystem,basis);
+    basisfunc, numelec = buildbasisfunc(atomicsystem,basis);
 
     S = buildelecoverlap(basisfunc,basis);
 
-    KE = build_kinetic_energy(basisfunc);
+    KE = buildkineticenergy(basisfunc);
 
-    Zq = build_nuclear_attract(atomicsystem,basisfunc);
+    Zq = buildnuclearattract(atomicsystem,basisfunc);
 
-    qq = build_elec_elec_repulsion(basisfunc);
+    qq = buildelecelecrepulsion(basisfunc);
 
     H_o = KE + ZZ ;
     
-    E_scf = min_energy_via_scf(H_o,qq,S,numelec);
+    E_scf = minenergyviascf(H_o,qq,S,numelec);
 
     E = E_scf + ZZ;
 
