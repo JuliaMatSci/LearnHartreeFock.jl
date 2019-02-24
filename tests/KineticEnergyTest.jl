@@ -29,7 +29,7 @@ This is a function to test the user types in BuildOverlap.jl. In asserts overlap
         for i=1:4
             for j=1:4
                 @test sign(kecalc[i,j]) == sign(ketest[i,j]);
-                diff = kecalc[i,j]-ketest[i,j];
+                diff = abs(kecalc[i,j]-ketest[i,j]);
                 @test diff <= tolerance;
 	    end
         end #i

@@ -1,23 +1,26 @@
 module KineticEnergy
 
 using TypesBasis
-using BuildOverlap
 using UtilityFunctions
 
 export buildkineticenergy
 
-"""
+@doc raw"""
     Use: buildkineticenergy(basisfunc::Basis)
 
 Description: Generate the Ne*N-basis x Ne*N-basis kinetic energy matrix for our contracted basis set. The following expression captures this:
 
+```
+$ T_{n,m}$
+```
 
 Input:
 Results:
 
-TODO:
 
-""" function buildkineticenergy(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
+
+"""
+function buildkineticenergy(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
 
     numbasisfunc = basis.nbasisfunc; #number of basis functions
     basissize = numelec*basis.nbasisfunc; #overlap size
@@ -64,31 +67,11 @@ TODO:
                     ke[n,m] -= 2 * cnm * am[mp]^2 * ((px-xm)^2 + 1/(2*p)) * overlap;
                     ke[n,m] -= 2 * cnm * am[mp]^2 * ((py-ym)^2 + 1/(2*p)) * overlap;
                     ke[n,m] -= 2 * cnm * am[mp]^2 * ((pz-zm)^2 + 1/(2*p)) * overlap;
-
-
                 end          
             end # nprims        
         end 
-    end #basissize
-    
+    end #basissize    
     return ke
 end #buildkineticenergy
 
-
-###
-"""
-    Use: delgaussbasis()
-
-
-
-Description: This function is based on the del-squared operator acting on primitive spherically symmetric Gaussian functions. This enables a simple function encoding approach.
-
-Input:
-Output:
-
-""" function delgaussbasis()
-
-    
-    end #delgaussbasis
-###
 end #KineticEnergy

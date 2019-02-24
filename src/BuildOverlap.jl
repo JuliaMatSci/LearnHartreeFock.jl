@@ -1,12 +1,11 @@
 module BuildOverlap
 
 export buildelecoverlap
-export getgaussoverlap
 
 using TypesParticles, TypesBasis
 using  UtilityFunctions
 
-"""
+@doc raw"""
                       buildelecoverlap(basis::Basis)
 
 returns the building of electron overlap integral matrix of expectation values:
@@ -19,7 +18,8 @@ are not orthogonal to one another.
 
 NOTES: multiple dispatch only for GaussOrbitals
 
-""" function buildelecoverlap(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
+"""
+function buildelecoverlap(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
     numbasisfunc = basis.nbasisfunc; #number of basis functions
     osize = numelec*basis.nbasisfunc; #overlap size
     overlap = zeros(osize,osize); #overlap matrix Ne*Gaussians x Ne*Gaussians
@@ -45,37 +45,5 @@ NOTES: multiple dispatch only for GaussOrbitals
     
     return overlap
 end #buildelecoverlap
-
-"""
-
-TODO write description
-
-""" function getgaussoverlap(np::Int,mp::Int,
-                             nbasis::GaussOrbitals,mbasis::GaussOrbitals)
-    np_alpha = nbasis.alphas[np];
-    mp_alpha = mbasis.alphas[mp];
-    spatialx =  gaussprod1D(nbasis.ax,np_alpha,mbasis.ax,mp_alpha);
-    spatialy =  gaussprod1D(nbasis.ay,np_alpha,mbasis.ay,mp_alpha);
-    spatialz =  gaussprod1D(nbasis.az,np_alpha,mbasis.az,mp_alpha);
-    sprod = spatialx*spatialy*spatialz;
-    term1 = sqrt(pi/(np_alpha+mp_alpha))^3; #relabel based on equations
-    term2 = nbasis.norms[np]*mbasis.norms[mp]; #rekabek based on equations
-    primoverlap = sprod*term1*term2;
-    return primoverlap
-end #getgaussoverlap
-        
-"""
-TODO write description
-
-""" function gaussprod1D(npx::Float64,np_alpha::Float64,
-                         mpx::Float64,mp_alpha::Float64)
-    p = np_alpha + mp_alpha;
-    q = (np_alpha * mp_alpha) / p;
-    #ratio = (np_alpha*npx + mp_alpha*mpx)/ p;
-    diff = npx-mpx;
-    kernel = exp(-q*diff^2);
-    return kernel
-end #gaussprod1D
-
 
 end #module
