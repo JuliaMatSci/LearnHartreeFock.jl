@@ -24,7 +24,7 @@ function buildkineticenergy(numelec::Int,basisfunc::Array{GaussOrbitals},basis::
 
     numbasisfunc = basis.nbasisfunc; #number of basis functions
     basissize = numelec*basis.nbasisfunc; #overlap size
-    ke = zeros(basissize,basissize); #overlap matrix Ne*Gaussians x Ne*Gaussians
+    ke = zeros(Float64,basissize,basissize); #overlap matrix Ne*Gaussians x Ne*Gaussians
 
     flatbasisfunc = flattenbasisfunc(numelec,numbasisfunc,basisfunc);
   

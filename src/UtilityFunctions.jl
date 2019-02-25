@@ -2,6 +2,7 @@ module UtilityFunctions
 
 export gaussprod1D,getgaussoverlap
 export flattenbasisfunc
+export boysfunction
 
 using TypesParticles, TypesBasis
 
@@ -68,6 +69,31 @@ function flattenbasisfunc(numelec::Int,numbasisfunc::Int,
     end
     return flatbasisfunc
 end #flattenbasisfunc
+
+@doc raw"""
+function boysfunction(x::Float64;n::Int=0)
+
+description: This is an implementation for integration of coulomb basis intergral using
+boys functions for Gaussian,  that are atomic-centered, basis functions. Requires use of gamma and incomplete gamma functions obtained through GSL library..
+
+input: 
+output:
+
+module requirements: This function needs access to the gamma and incomplete gamma functions. For this function call I use the GSL (GNU Scientific Library) interface which has sf_gamma and complimentary gamma function sf_gamma_inc_P
+
+"""
+function boysfunction(x::Float64;n::Int=0)
+    if x == 0.00e0
+        out = 1.00e0/(2.00e0*n+1.00e0);
+    else
+        nhalf = n + 0.5e0;
+        gamma = GSL.sf_gamma(nhalf);
+        igamma = GSL.sf_gamma_inc_P(nhalf,x);
+        out = gamma*igamma/(2*x^(n+0.5e0));
+    end
+    return out
+    
+end #boysfunction
 
 
 end #module

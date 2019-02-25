@@ -22,7 +22,7 @@ NOTES: multiple dispatch only for GaussOrbitals
 function buildelecoverlap(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
     numbasisfunc = basis.nbasisfunc; #number of basis functions
     osize = numelec*basis.nbasisfunc; #overlap size
-    overlap = zeros(osize,osize); #overlap matrix Ne*Gaussians x Ne*Gaussians
+    overlap = zeros(Float64,osize,osize); #overlap matrix Ne*Gaussians x Ne*Gaussians
 
     #flatbasisfunc=vcat(basisfunc...); #Need to improve
     flatbasisfunc = flattenbasisfunc(numelec,numbasisfunc,basisfunc);

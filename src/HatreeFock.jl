@@ -38,9 +38,9 @@ Program Outline
 
     qq = buildelecelecrepulsion(basisfunc);
 
-    H_o = KE + Zq ;
+    Ho = KE + Zq ;
     
-    E_scf = minenergyviascf(H_o,qq,S,numelec);
+    E_scf = minenergyviascf(Ho,qq,S,numelec);
 
     E = E_scf + ZZ;
 
