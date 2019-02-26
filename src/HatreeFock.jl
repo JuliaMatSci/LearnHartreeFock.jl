@@ -1,6 +1,14 @@
 module HatreeFock
 
-using CodeInfo
+if  ! isempty(ENV["LEARNHATREEFOCK_PATH"])
+    const SRC_PATH=ENV["LEARNHATREEFOCK_PATH"];
+else
+    println("! Environmental variable $LEARNHARTREEFOCK_PATH not set, defaulting to pwd() !")
+    const SRC_PATH=pwd();
+end
+
+#using CodeInfo
+include("ModuleList.jl")
 
 """
                         HatreeFock(filename=user_filename)
@@ -20,9 +28,9 @@ Program Outline
 6.   Build/calculate electron-electron repulsion (mean-field and exchange)
 7.   Self-consistent field solution for total energy
 
-""" function main(filename="HatreeFock.in"))
+""" function main(filename="HatreeFock.in")
 
-    printcodeinfo()
+    #printcodeinfo()
     
     atomicsystem, basis = getcalcsetup(filename);
 
@@ -30,21 +38,24 @@ Program Outline
 
     basisfunc, numelec = buildbasisfunc(atomicsystem,basis);
 
-    S = buildelecoverlap(basisfunc,basis);
+    S = buildelecoverlap(numelec,basisfunc,basis);
 
-    KE = buildkineticenergy(basisfunc);
+    KE = buildkineticenergy(numelec,basisfunc,basis);
 
-    Zq = buildnuclearattract(atomicsystem,basisfunc);
+    Zq = buildnuclrattract(atomicsystem,numelec,
+                             basisfunc,basis);
 
-    qq = buildelecelecrepulsion(basisfunc);
+    qq = buildelecelecrepulsion(numelec,basisfunc,basis);
 
+    size(KE) == size(Zq) ? nothing : throw(AssertionError("Kinetic energy matrix size does not equal nuclear attraction matrix!"))
+    
     Ho = KE + Zq ;
     
-    E_scf = minenergyviascf(Ho,qq,S,numelec);
+    #E_scf = minenergyviascf(Ho,qq,S,numelec);
 
-    E = E_scf + ZZ;
+    #E = E_scf + ZZ;
 
-    println("SCF Minimum energy: $E [Ha]")
+    #println("SCF Minimum energy: $E [Ha]")
 
     return 0
 end #main

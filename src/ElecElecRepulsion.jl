@@ -49,19 +49,19 @@ function buildelecelecrepulsion(numelec::Int,basisfunc::Array{GaussOrbitals},
     for l=1:basissize
         basisl = flatbasisfunc[l];
         primsl = length(basisl.coefs);
-        for lp=1:prisml
+        for lp=1:primsl
             #alpha_lp = basisl.alphas[lp];
             #coef_lp = basisl.coefs[lp];
             for m=1:basissize
                 basism = flatbasisfunc[m];
                 primsm = length(basism.coefs);
-                for mp=1:prism
+                for mp=1:primsm
                     #alpha_mp = basism.alpha[mp];
                     #coef_mp = basism.coefs[mp];
 
                     #Build new Gaussian center from l,m Gaussian orbitals.
                     #TODO: Turn into function
-                    norm_lm = getnewcenter(basisl,lp,basism,mp);
+                    gausslm = getnewcenter(basisl,lp,basism,mp);
                    
                     #Now build new Gaussian center for n,o
                     for n=1:basissize
@@ -77,8 +77,15 @@ function buildelecelecrepulsion(numelec::Int,basisfunc::Array{GaussOrbitals},
                                     #alpha_op = basiso.alphas[op];
                                     #coefs_op = basiso.coefs[op];
 
-                                    norm_op = getnewcenter(basisn,np,basiso,op);
-                                    alpha = 
+                                    gaussno = getnewcenter(basisn,np,basiso,op);
+                                    alpha = (gausslm.p*gaussno.p)/(gausslm.p+gaussno.p);
+                                    dist = (gausslm.px-gaussno.px)^2 +
+                                           (gausslm.py-gaussno.py)^2 +
+                                           (gausslm.pz-gaussno.pz)^2;
+                                    #NOTE: This calls a spherical implemented version
+                                    boysfunc = boysfunction(alpha*dist,n=0);
+                                    prefact = (2.00e0*pi^2.50e0)/(gausslm.p*gaussno.p*sqrt(gausslm.p+gaussno.p));
+                                    elecelecrepul[l,m,n,o] += prefact*gausslm.ampli*gaussno.ampli*boysfunc;
                                 end
                             end # o=1:basissize
                         end
@@ -97,11 +104,13 @@ function getnewcenter();
 
 """
 function getnewcenter(basisn::GaussOrbitals,np::Int,
-                                                      basism::GaussOrbitals,mp::Int)
+                      basism::GaussOrbitals,mp::Int)
     alpha_np = basisn.alphas[np]::Float64;
     alpha_mp = basism.alphas[mp]::Float64;
-    coefs_np = basisn.coefs[np]::Float64;
-    coefs_mp = basism.coefs[mp]::Float64;
+    coef_np = basisn.coefs[np]::Float64;
+    coef_mp = basism.coefs[mp]::Float64;
+    norm_np = basisn.norms[np]::Float64;
+    norm_mp = basism.norms[mp]::Float64;
     p = alpha_np+alpha_mp;
     px = (basisn.ax*alpha_np + basism.ax*alpha_mp)/p;
     py = (basisn.ay*alpha_np + basism.ay*alpha_mp)/p;
@@ -109,9 +118,24 @@ function getnewcenter(basisn::GaussOrbitals,np::Int,
     spatialx_nm =gaussprod1D(basisn.ax,alpha_np,basism.ax,alpha_mp);
     spatialy_nm =gaussprod1D(basisn.ay,alpha_np,basism.ay,alpha_mp);
     spatialz_nm =gaussprod1D(basisn.az,alpha_np,basism.az,alpha_mp);
-    ampli_nm = spatialx_nm*spatialy_nm*spatialz_nm;
-    return coef_np * coef_mp * ampli_nm;
+    spatial_nm = spatialx_nm*spatialy_nm*spatialz_nm;
+    ampli_nm = norm_np * norm_mp * coef_np * coef_mp * spatial_nm;
+    return NewGauss(p,px,py,pz,ampli_nm)
 
 end #getnewcenter
-                                
+
+"""
+TODO: should I move this to BasisTypes.jl?
+
+""" struct NewGauss
+     p::Float64
+     px::Float64
+     py::Float64
+     pz::Float64
+     ampli::Float64
+     function NewGauss(p,px,py,pz,ampli)
+          new(p,px,py,pz,ampli);
+      end
+end #NewGauss
+
 end #ElecElecRepulsion

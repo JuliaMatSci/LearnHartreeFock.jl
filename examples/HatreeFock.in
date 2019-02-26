@@ -1,15 +1,15 @@
-#Hydrogen Atom
+#Hydrogen molecule
 
 #Angstroms
 cell 10.0 10.0 10.0
 
 natoms 2
-#Z ,x , y, z in Angstroms
+
+#Atoms Z ,x , y, z in Angstroms
 positions 1 0.00 0.00 0.00 &
 1 0.77 0.00 0.00 
 
-
-#basis
+#Basis definition
 basistype 6-31
 basisfile ../examples/basissets/H.6-31G.mod
 

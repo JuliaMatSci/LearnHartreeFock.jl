@@ -1,4 +1,4 @@
-#  6-31G  EMSL  Basis Set Exchange Library  10/7/18 2:33 PM
+#  6-31G  EMSL  Basis Set Exchange Library  10/7/18 2:35 PM
 # Elements                             References
 # --------                             ----------
 # H - He: W.J. Hehre, R. Ditchfield and J.A. Pople, J. Chem. Phys. 56,
@@ -16,10 +16,10 @@
 
 #BASIS "ao basis" PRINT
 #BASIS SET: (4s) -> [2s]
-#H    S
-     18.7311370              0.03349460       
-      2.8253937              0.23472695       
-      0.6401217              0.81375733       
-#H    S
-      0.1612778              1.0000000        
+He S 3
+38.4216340 0.0237660        
+5.7780300  0.1546790        
+1.2417740  0.4696300        
+He S 1
+0.2979640 1.0000000        
 #END

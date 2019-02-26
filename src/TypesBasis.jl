@@ -63,6 +63,7 @@ polarization functiosn just simple function form:
           norms = (2.00e0.* basis.alphas ./pi).^(3/4);
           new(atom.x,atom.y,atom.z,basis.coefs,basis.alphas,norms);
       end
-end #GausSOrbital
+end #GausSOrbitals
+
 
 end #module

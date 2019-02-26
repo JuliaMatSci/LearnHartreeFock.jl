@@ -1,10 +1,13 @@
 module UtilityFunctions
 
+#Julia Libraries/Modules
+using GSL
+
+using TypesParticles, TypesBasis
+
 export gaussprod1D,getgaussoverlap
 export flattenbasisfunc
 export boysfunction
-
-using TypesParticles, TypesBasis
 
 @doc raw"""
 TODO write description
