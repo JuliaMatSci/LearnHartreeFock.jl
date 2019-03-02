@@ -1,5 +1,6 @@
 module ElecElecRepulsion
 
+#LearnHatreeFock.jl Modules
 using TypesBasis,TypesParticles
 using UtilityFunctions
 
@@ -30,7 +31,7 @@ The steps for solving the integral are:
 input:
 output:
 
-requirements
+
 """
 function buildelecelecrepulsion(numelec::Int,basisfunc::Array{GaussOrbitals},
                                 basis::Basis)
@@ -50,32 +51,23 @@ function buildelecelecrepulsion(numelec::Int,basisfunc::Array{GaussOrbitals},
         basisl = flatbasisfunc[l];
         primsl = length(basisl.coefs);
         for lp=1:primsl
-            #alpha_lp = basisl.alphas[lp];
-            #coef_lp = basisl.coefs[lp];
             for m=1:basissize
                 basism = flatbasisfunc[m];
                 primsm = length(basism.coefs);
                 for mp=1:primsm
-                    #alpha_mp = basism.alpha[mp];
-                    #coef_mp = basism.coefs[mp];
-
                     #Build new Gaussian center from l,m Gaussian orbitals.
                     #TODO: Turn into function
                     gausslm = getnewcenter(basisl,lp,basism,mp);
-                   
+
                     #Now build new Gaussian center for n,o
                     for n=1:basissize
                         basisn = flatbasisfunc[n];
                         primsn = length(basisn.coefs);
                         for np=1:primsn
-                            #alpha_np = basisn.alphas[np];
-                            #coefs_np = basisn.coefs[np];
                             for o=1:basissize
                                 basiso = flatbasisfunc[o];
                                 primso = length(basiso.coefs);
                                 for op=1:primso
-                                    #alpha_op = basiso.alphas[op];
-                                    #coefs_op = basiso.coefs[op];
 
                                     gaussno = getnewcenter(basisn,np,basiso,op);
                                     alpha = (gausslm.p*gaussno.p)/(gausslm.p+gaussno.p);

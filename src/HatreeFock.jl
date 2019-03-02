@@ -51,11 +51,11 @@ Program Outline
     
     Ho = KE + Zq ;
     
-    #E_scf = minenergyviascf(Ho,qq,S,numelec);
+    energyscf = runscf(numelec,S,Ho,qq);
 
-    #E = E_scf + ZZ;
+    E = energyscf + ZZ;
 
-    #println("SCF Minimum energy: $E [Ha]")
+    println("SCF Minimum energy: $E [Ha]")
 
     return 0
 end #main

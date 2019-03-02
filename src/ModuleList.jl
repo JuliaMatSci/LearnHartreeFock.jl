@@ -7,3 +7,4 @@ using NuclearRepulsion
 using KineticEnergy
 using NuclearAttraction
 using ElecElecRepulsion
+using SCF
