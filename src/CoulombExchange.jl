@@ -19,8 +19,8 @@ function getcoulexchange(density::Array,elecelecrepul::Array)
         for m=1:nbasisfunc
             for n=1:nbasisfunc
                 for o=1:nbasisfunc
-                    diff = elecelecrepul[l,m,n,o]-elecelecrepul[l,n,m,o];
-                    coulexchange[l,m] += density[n,o]*(2.00e0*diff);
+                    diff = 2.00e0*elecelecrepul[l,m,n,o]-elecelecrepul[l,n,m,o];
+                    coulexchange[l,m] += density[n,o]*(diff);
                 end
             end #n=1:nbasisfunc
         end

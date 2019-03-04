@@ -40,17 +40,19 @@ function runscf(numelec::Int,overlap::Array{Float64,2},
 
     #HF Roothaan eq.
     #Find molecular orbital single electron solutions
-    evalsprim,evecs = eigen(fockprime);
+    evals,evecsprime = eigen(fockprime);
 
     #Go back to atomic orbitals
-    evals = orthoverlap*evalsprim;
+    evecs = orthoverlap*evecsprime;
 
     #Sort lowest eigen values of for atomic orbitals
     sorteigen!(evals,evecs);
 
+    
     #Build electron density for Hatree potential?
     density = builddensity(evecs,numelec)
-    println(density)
+
+    
     totalenergy = zeros(Float64,maxcycle+1);
     #SCF cycle
     for cycle=2:maxcycle+1
@@ -61,11 +63,11 @@ function runscf(numelec::Int,overlap::Array{Float64,2},
 
         #find solutions
         fockprime = orthoverlapstar*fock*orthoverlap;
-        evalsprim,evecs = eigen(fockprime);
-        evals = orthoverlap*evalsprim;
+        evals,evecsprime = eigen(fockprime);
+        evecs = orthoverlap*evecsprime;
 
         sorteigen!(evals,evecs);
-
+        
         density = builddensity(evecs,numelec);
 
         totalenergy[cycle] = getfockenergy(ho,fock,density);
@@ -86,7 +88,7 @@ end #runscf
 @doc raw"""
 function builddensity(evecs::Array{Number,2},n::)
 """
-function builddensity(evecs::Array,numelec::Int)
+function builddensity(evecs::Matrix,numelec::Int)
     nhalf = Int(numelec/2);
     esize = size(evecs)[1];
     if typeof(evecs) == Array{Complex,2}
@@ -113,7 +115,7 @@ description: sort the eignevalues and vectors.
 NOTES: I would like to rework this so that its more 
     succinct.
 """
-function sorteigen!(evals::Array,evecs::Array)
+function sorteigen!(evals::Vector{T},evecs::Matrix{T}) where {T<:Real}
     ncol = size(evecs)[2];
 
     #Make a shallow copy and force local scope
@@ -133,6 +135,16 @@ function sorteigen!(evals::Array,evecs::Array)
     evecs[:,:] = sortedevecs[:,:];
 
 end #sortevals
+
+@doc raw"""
+sorteigen()
+
+TODO
+"""
+function sorteigen(evals::Vector{T},evecs::Matrix{T}) where {T<:Real}
+    p = sortperm(evals);
+    return evals[p], evecs[p,:]
+end
 
 @doc raw"""
 function getfockenergy()
@@ -155,11 +167,14 @@ function printscf()
 """
 function printscf(iteration::Int,delta::Float64,energy::Float64)
     if iteration < 2
-        @printf("--------------------------------------\n");
-        @printf("Iteration          ΔE          Energy \n");
-        @printf("--------------------------------------\n");
+        @printf("                   HF SCF                         \n");
+        @printf("--------------------------------------------------\n");
+        @printf("Iteration         ΔE [Ha]          HF-Energy [Ha] \n");
+        @printf("--------------------------------------------------\n");
+        @printf("%i                %0.6f           %0.6e   \n",
+            iteration,delta,energy);
     else
-        @printf("%i              %0.6f         %0.6e   \n",
+        @printf("%i                %0.6f           %0.6e   \n",
             iteration,delta,energy);
     end
 end #printscf

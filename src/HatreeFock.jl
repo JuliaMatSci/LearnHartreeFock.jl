@@ -49,15 +49,19 @@ Program Outline
 
     size(KE) == size(Zq) ? nothing : throw(AssertionError("Kinetic energy matrix size does not equal nuclear attraction matrix!"))
     
-    Ho = KE + Zq ;
-    
+    Ho = KE + Zq ; #TODO: Need unit test
+
     energyscf = runscf(numelec,S,Ho,qq);
 
     E = energyscf + ZZ;
 
-    println("SCF Minimum energy: $E [Ha]")
-
-    return 0
+    println("\n")
+    println("---------------------------------------------")
+    println("Total Minimum Energy: $E [Ha]")
+    println("---------------------------------------------")
+    println("\n")
+    
+    return println("!!LearnHatreeFock.jl Succesfully Ran!!\n")
 end #main
 
 #Run Program
