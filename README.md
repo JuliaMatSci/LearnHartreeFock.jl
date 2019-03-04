@@ -1,5 +1,6 @@
 # LearnHatreeFock.jl
-<img src="JuliaPsi.png" alt="JuliaPsi Logo" width="150"/>
+<img src="JuliaPsi.png" alt="JuliaPsi Logo" width="150"/> 
+      
 
 ## Learning Hatree-Fock By Doing
 
@@ -20,7 +21,9 @@ The code here is directly based on the implementation the video series and matla
     2. Gaussian basis-sets including angular, polarized, or diffuse functions.
     3. Electron correlation energy.
     4. Excited-state, dynamics, or perturbation theory calculations.
-    
+
+### H2 Binding Curve Example
+<img src="examples/H2_BindingCurve/H2_BindingCurve.png" alt="H2 Binding Curve" width="300"/>
 
 ## Folder Hierarchy
   - /src - The primary source code for running HatreeFock.jl
