@@ -5,19 +5,19 @@ export buildbasisfunc
 using TypesParticles, TypesBasis
 
 
-"""
-                      build_basis_function(atomicsystem::SystemOfAtoms,basis::Basis)
+@doc raw"""
+buildbasisfunction(atomicsystem::SystemOfAtoms,basis::Basis)
 
-returns atom-centered basis functions and number of electrons. 
+Returns atom-centered basis functions and number of electrons. 
 
-Description: this function will take the system information and create the basis functions
+Description: This function will take the system information and create the basis functions
 that are atomically centered. Each basis function will contain the parameters for the Gaussian
 functions that when linearly combined make up the basis function. Note that the actual basis 
 function is not yet constructed here, i.e., we are not taking the summation of Gaussians. 
 
+Depends on datatypes in TypesParticles.jl and TypesBasis.jl
+
 """ function buildbasisfunc(atomicsystem::SystemOfAtoms,basis::Basis)
-    #basis is a BasisFunctions datatype
-    
     natoms = atomicsystem.natoms;
     nelectrons = 0;
     for i=1:natoms
@@ -29,9 +29,7 @@ function is not yet constructed here, i.e., we are not taking the summation of G
 
     #Assign each atom-centered basis functions
     for i=1:nelectrons
-        #Get correct expon.
         #For each gaussian store 5 values: c,alpha,xo,yo,zo
-
         #For Z=1 n-basis per atom is 1 so basisfunc length equal num atoms. 
         for j=1:nbasis
             #6-31 type basis set
@@ -43,35 +41,6 @@ function is not yet constructed here, i.e., we are not taking the summation of G
     end #nelectrons
     
     return basisfunc,nelectrons
-end #build_basis_function
+end #buildbasisfunction
 
-    
-#"""
-#Multiple dispatch version for Array of Basis type
-
-#""" function buildbasisfunc(atomicsystem::SystemOfAtoms,basis::Array{T,1}) where T <: Basis
-#    natoms = atomicsystem.natoms;
-#    nelectrons = 0;
-#    nbasis = 0;
-#    nbasisorb = length(basis)    
-#    #Assign each atom-centered basis functions
-#    basisfunc = Array{GaussOrbitals,2}(undef,natoms,nbasisorb);
-#     for i=1:natoms
-#        Z=atomicsystem.atoms[i].Z
-#        nelectrons += Z
-#        #Get correct expon.
-#        #For each gaussian store 5 values: c,alpha,xo,yo,zo
-
-#        #For Z=1 n-basis per atom is 1 so basisfunc length equal num atoms. 
-#        for n=1:nbasisorb
-#            if (basis[n].info == "6-31") && ( Z == 1)
-#                basisfunc[i,n] =  GaussOrbitals(atomicsystem.atoms[i],basis[n])
-#            end # "6-31"           
-#        end # nbasisorb
-         
-#    end
-#    return basisfunc,nelectrons
-#end #build_basis_function
-
-
-end #module
+end #BuildBasis

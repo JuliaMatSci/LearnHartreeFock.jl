@@ -1,9 +1,9 @@
 module HatreeFock
 
-if  ! isempty(ENV["LEARNHATREEFOCK_PATH"])
+if haskey(ENV,"LEARNHATREEFOCK_PATH")
     const SRC_PATH=ENV["LEARNHATREEFOCK_PATH"];
 else
-    println("! Environmental variable $LEARNHARTREEFOCK_PATH not set, defaulting to pwd() !")
+    println("! Environmental variable LEARNHARTREEFOCK_PATH not set, defaulting to pwd() !")
     const SRC_PATH=pwd();
 end
 
@@ -65,7 +65,11 @@ Program Outline
 end #main
 
 #Run Program
-   main(ARGS[1])
+if !isempty(ARGS)
+    main(ARGS[1])
+else
+    println("LearnHatreeFock.jl Module loaded!")
+end
 #End Program
 
 end
