@@ -33,19 +33,19 @@ Program Outline
     #printcodeinfo()
     
     atomicsystem, basis = getcalcsetup(filename);
-
+    natoms = atomicsystem.natoms;
+    
     ZZ = calcnuclrepul(atomicsystem);
 
     basisfunc, numelec = buildbasisfunc(atomicsystem,basis);
 
-    S = buildelecoverlap(numelec,basisfunc,basis);
+    S = buildelecoverlap(natoms,basisfunc,basis);
 
-    KE = buildkineticenergy(numelec,basisfunc,basis);
+    KE = buildkineticenergy(natoms,basisfunc,basis);
 
-    Zq = buildnuclrattract(atomicsystem,numelec,
-                             basisfunc,basis);
+    Zq = buildnuclrattract(atomicsystem,basisfunc,basis);
 
-    qq = buildelecelecrepulsion(numelec,basisfunc,basis);
+    qq = buildelecelecrepulsion(natoms,basisfunc,basis);
 
     size(KE) == size(Zq) ? nothing : throw(AssertionError("Kinetic energy matrix size does not equal nuclear attraction matrix!"))
     

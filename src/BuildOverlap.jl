@@ -19,13 +19,13 @@ are not orthogonal to one another.
 NOTES: multiple dispatch only for GaussOrbitals
 
 """
-function buildelecoverlap(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
+function buildelecoverlap(natoms::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
     numbasisfunc = basis.nbasisfunc; #number of basis functions
-    osize = numelec*basis.nbasisfunc; #overlap size
+    osize = natoms*basis.nbasisfunc; #overlap size
     overlap = zeros(Float64,osize,osize); #overlap matrix Ne*Gaussians x Ne*Gaussians
 
     #flatbasisfunc=vcat(basisfunc...); #Need to improve
-    flatbasisfunc = flattenbasisfunc(numelec,numbasisfunc,basisfunc);
+    flatbasisfunc = flattenbasisfunc(natoms,numbasisfunc,basisfunc);
   
     for n=1:osize
         for m=1:osize
@@ -42,7 +42,7 @@ function buildelecoverlap(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Ba
             end # mprims        
         end 
     end #osize
-    
+
     return overlap
 end #buildelecoverlap
 

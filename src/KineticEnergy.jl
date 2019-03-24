@@ -20,13 +20,13 @@ Results:
 
 
 """
-function buildkineticenergy(numelec::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
+function buildkineticenergy(natoms::Int,basisfunc::Array{GaussOrbitals},basis::Basis)
 
     numbasisfunc = basis.nbasisfunc; #number of basis functions
-    basissize = numelec*basis.nbasisfunc; #overlap size
+    basissize = natoms*basis.nbasisfunc; #overlap size
     ke = zeros(Float64,basissize,basissize); #overlap matrix Ne*Gaussians x Ne*Gaussians
 
-    flatbasisfunc = flattenbasisfunc(numelec,numbasisfunc,basisfunc);
+    flatbasisfunc = flattenbasisfunc(natoms,numbasisfunc,basisfunc);
   
     for n=1:basissize
         for m=1:basissize

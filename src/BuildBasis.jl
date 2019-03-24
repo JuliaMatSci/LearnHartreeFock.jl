@@ -27,24 +27,19 @@ Depends on datatypes in TypesParticles.jl and TypesBasis.jl
     end
     
     nbasis = basis.nbasisfunc;
-    basisfunc = Array{GaussOrbitals,2}(undef,nelectrons,nbasis);
+    basisfunc = Array{GaussOrbitals,2}(undef,natoms,nbasis);
 
     #Assign each atom-centered basis functions
-    ie = 1; #total electron counter
+    #ie = 1; #total electron counter
     for a=1:natoms
-        #Assumed closed-shell atomic configuration
-        atoms_nelectrons = atomicsystem.atoms[a].Z;
-        for ane=1:atoms_nelectrons
-            #For each gaussian store 5 values: c,alpha,xo,yo,zo
-            #For Z=1 n-basis per atom is 1 so basisfunc length equal num atoms. 
-            for j=1:nbasis
-                #6-31 type basis set
-                if basis.basisfunc[j].info == "6-31"
-                    basisfunc[ie,j] =  GaussOrbitals(atomicsystem.atoms[a],basis.basisfunc[j])
-                end
-            end # nbasis
-            ie += 1
-        end #atoms_nelectrons
+        #For each gaussian store 5 values: c,alpha,xo,yo,zo
+        #For Z=1 n-basis per atom is 1 so basisfunc length equal num atoms. 
+        for j=1:nbasis
+            #6-31 type basis set
+            if basis.basisfunc[j].info == "6-31"
+                basisfunc[a,j] =  GaussOrbitals(atomicsystem.atoms[a],basis.basisfunc[j])
+            end
+        end # nbasis
     end # atomicsystem.atoms
     
     return basisfunc,nelectrons

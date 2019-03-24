@@ -44,7 +44,7 @@ end #getgaussoverlap
         
 
 @doc """
-flattenbasisfunction(number_electrons::Int, number_basis_functions::Int,
+flattenbasisfunction(natoms::Int, number_basis_functions::Int,
                      basis_functions::Array{GaussOrbitals})
 
 description: This utility function takes a 2-dimensional array with elements having data-type
@@ -58,20 +58,21 @@ output:
 module requirements: TypesParticles.jl, TypesBasis.jl
 
 """
-function flattenbasisfunc(numelec::Int,numbasisfunc::Int,
+function flattenbasisfunc(natoms::Int,numbasisfunc::Int,
                               basisfunc::Array{GaussOrbitals})
-    overlapsize = numelec*numbasisfunc;
-    flatbasisfunc = Array{GaussOrbitals,1}(undef,overlapsize);
-    ei = 1;
-    for e=1:numelec
-        tmpbf = basisfunc[e,:]
+    totalbasissize = natoms*numbasisfunc;
+    flatbasisfunc = Array{GaussOrbitals,1}(undef,totalbasissize);
+    ai = 1;
+    for a=1:natoms
+        tmpbf = basisfunc[a,:]
         for i=1:numbasisfunc
-            flatbasisfunc[ei] = tmpbf[i];
-            ei += 1;
+            flatbasisfunc[ai] = tmpbf[i];
+            ai += 1;
         end
     end
     return flatbasisfunc
 end #flattenbasisfunc
+
 
 @doc raw"""
 function boysfunction(x::Float64;n::Int=0)

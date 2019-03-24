@@ -41,16 +41,15 @@ Results:
 module requirements:
 
 """
-function buildnuclrattract(system::SystemOfAtoms,numelec::Int,
-                           basisfunc::Array{GaussOrbitals},basis::Basis)
-
+function buildnuclrattract(system::SystemOfAtoms,basisfunc::Array{GaussOrbitals},basis::Basis)
+    natoms = system.natoms;
     numbasisfunc = basis.nbasisfunc; #number of basis functions
-    basissize = numelec*numbasisfunc;
+    basissize = natoms*numbasisfunc;
     nuclrattract = zeros(Float64,basissize,basissize);
     
-    flatbasisfunc = flattenbasisfunc(numelec,numbasisfunc,basisfunc);
+    flatbasisfunc = flattenbasisfunc(natoms,numbasisfunc,basisfunc);
 
-    for i=1:system.natoms
+    for i=1:natoms
         atom = system.atoms[i];
         for n=1:basissize
             for m=1:basissize
