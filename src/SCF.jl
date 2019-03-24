@@ -31,7 +31,11 @@ function runscf(numelec::Int,overlap::Array{Float64,2},
     #Orthogonal overlap matrix, i.e., molecular orbitals
     oevals,oevecs = eigen(overlap);
     oevalsmat = Diagonal(oevals);
-    orthoverlap = oevecs*(oevalsmat^-0.5e0)*adjoint(oevecs);
+
+    #Try to invert eigenvalues matrix assuming non-singular, if singular
+    # promote datatype ComplexF64
+    invoevalsmat = returnevalsinvhalf(oevalsmat);
+    orthoverlap = oevecs*invoevalsmat*adjoint(oevecs);
     orthoverlapstar = adjoint(orthoverlap);
 
     #Fock matrix construction
@@ -44,7 +48,7 @@ function runscf(numelec::Int,overlap::Array{Float64,2},
 
     #Go back to atomic orbitals
     evecs = orthoverlap*evecsprime;
-
+    
     #Sort lowest eigen values of for atomic orbitals
     sorteigen!(evals,evecs);
 
@@ -65,7 +69,7 @@ function runscf(numelec::Int,overlap::Array{Float64,2},
         fockprime = orthoverlapstar*fock*orthoverlap;
         evals,evecsprime = eigen(fockprime);
         evecs = orthoverlap*evecsprime;
-
+        
         sorteigen!(evals,evecs);
         
         density = builddensity(evecs,numelec);
@@ -85,12 +89,34 @@ function runscf(numelec::Int,overlap::Array{Float64,2},
         
 end #runscf
 
+
+@doc raw"""
+function returnevalsinvhalf(evals)
+
+Try to invert eigenvalues matrix assuming non-singular, if singular promote 
+datatype ComplexF64
+
+"""
+function returnevalsinvhalf(evals)
+    try
+        invevalsmat = evals^-0.5e0;
+    catch
+        invevalsmat = (convert(Array{ComplexF64},evals))^(-0.5e0);
+    end
+end #returnevalsinvhalf
+
+
 @doc raw"""
 function builddensity(evecs::Array{Number,2},n::)
+
+Restricted HF density
+
 """
 function builddensity(evecs::Matrix,numelec::Int)
+    #Restricted HF density
     nhalf = Int(numelec/2);
     esize = size(evecs)[1];
+    
     if typeof(evecs) == Array{Complex,2}
         density = zeros(Complex,esize,esize)
     else
@@ -125,6 +151,29 @@ function sorteigen!(evals::Vector{T},evecs::Matrix{T}) where {T<:Real}
     
     #Get sorted indexes for eigenvals
     sortedindex = sortperm(evals);
+    evals[:] = sortedevals[sortedindex];
+
+    #Get sorted eigenvectors
+    for i=1:ncol
+        sortedevecs[:,i] = evecs[:,sortedindex[i]];
+    end
+
+    evecs[:,:] = sortedevecs[:,:];
+
+end #sortevals
+
+function sorteigen!(evals::Vector{T},evecs::Matrix{T}) where {T<:Complex}
+    ncol = size(evecs)[2];
+
+    #Make a shallow copy and force local scope
+    #CHECK: I'm not sure what the most Julianic way is to do this.
+    local sortedevals = copy(evals);
+    local sortedevecs = copy(evecs);
+
+    magevals = adjoint(evals)*evals;
+    println(magevals);
+    #Get sorted indexes for eigenvals
+    sortedindex = sortperm(real(magevals));
     evals[:] = sortedevals[sortedindex];
 
     #Get sorted eigenvectors
