@@ -16,7 +16,7 @@ using NuclearAttraction
     @testset "Nuclear Attraction" begin
         system,basisset = getcalcsetup("../examples/HatreeFock.in")
         basisfunc,numelec = buildbasisfunc(system,basisset);
-        nuclrattractcalc = buildnuclrattract(system,numelec,basisfunc,basisset);
+        nuclrattractcalc = buildnuclrattract(system,basisfunc,basisset);
         nuclrattracttest = [-2.7494e0 -1.3415e0 -2.1471e0 -1.2642e0;
                   -1.3415e0 -1.2431e0 -1.2642e0 -1.2027e0;
                   -2.1471e0 -1.2642e0 -2.7494e0 -1.3415e0;
