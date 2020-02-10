@@ -1,16 +1,14 @@
-# LearnHatreeFock.jl
+# LearnHartreeFock.jl
 <img src="JuliaPsi.png" alt="JuliaPsi Logo" width="150"/> 
  
 
-Yes I know it is spelled "Hartree" but when I was a young lad learning quantum mechanics, I devised a mnemonics to remember the time-independent Schrodinger equation, where the left hand side was given by "A Hat wearing Tree" therefore HaTree here the Hat correpsonds the the Hamiltonian operator and Tree the greek letter Psi. This is the origin of the name choice LearnHatreeFock.jl
-
 ## Learning Hartree-Fock By Doing
 
-This package is focused on learning how to code a package for solving simple Hatree-Fock electronic structure calculations. 
+This package is focused on learning how to code a library for solving simple Hartree-Fock electronic structure calculations. 
 
-The aim is to assist users of mainstream quantum chemistry and electronic structure software (e.g. NWChem, CP2K) with a more fundamental understanding of the steps associated with with all-electron wavefunction based approaches. This code will only address  Hartree-Fock approach (i.e. only electron exchange) using simple Gaussian basis-set (e.g. 6-31G). The code relies heavily on Gaussian product theorem to handle integrals. 
+The aim is to assist users of mainstream quantum chemistry and electronic structure software (e.g. NWChem, CP2K) with a more fundamental understanding of the steps associated with all-electron wavefunction based approaches. This code will only address  Hartree-Fock approach (i.e. only electron exchange) using simple Gaussian basis-sets (e.g. 6-31G). The code relies heavily on Gaussian product theorem to handle integrals. 
 
-The code here is directly based on the implementation the video series and matlab code by [Prof. James Johns at the Univ. of Minnesota](http://www1.chem.umn.edu/groups/johns/index.html). This version is written in [Julia](https://julialang.org/), which will have familiar syntax as Matlab, but may have promising performance advantages and uses a liberal MIT license.
+The code here is directly based on the implementation from the video series and matlab code by [Prof. James Johns at the Univ. of Minnesota](http://www1.chem.umn.edu/groups/johns/index.html). This version is written in [Julia](https://julialang.org/), which will have familiar syntax as Matlab, but may have promising performance advantages (not confirmed) and uses a liberal MIT license.
 
 ## What Code Can & Cannot Do
 ### Does
@@ -28,7 +26,7 @@ The code here is directly based on the implementation the video series and matla
 <img src="examples/H2_BindingCurve/H2_BindingCurve.png" alt="H2 Binding Curve" width="300"/>
 
 ## Folder Hierarchy
-  - /src - The primary source code for running HatreeFock.jl
-  - /tests - Test modules for comparing to original code by Prof. James John.
-  - /docs - Documentation.
-  - /examples  - Example calculations and basis-sets.
+  - [src](src) - The primary source code for running HatreeFock.jl
+  - [tests](tests) - Test modules for comparing to original code by Prof. James John.
+  - [docs](docs) - Documentation.
+  - [examples](examples)  - Example calculations and basis-sets.
