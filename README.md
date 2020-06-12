@@ -1,4 +1,6 @@
-# LearnHartreeFock.jl
+
+# LearnHartreeFock.jl [![DOI](https://zenodo.org/badge/171785355.svg)](https://zenodo.org/badge/latestdoi/171785355)
+
 <img src="JuliaPsi.png" alt="JuliaPsi Logo" width="150"/> 
  
 
